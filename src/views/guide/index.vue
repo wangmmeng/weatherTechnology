@@ -1,36 +1,53 @@
 <template>
-  <div class="app-container">
-    <aside>
-      The guide page is useful for some people who entered the project for the first time. You can briefly introduce the
-      features of the project. Demo is based on
-      <a href="https://github.com/kamranahmedse/driver.js" target="_blank">driver.js.</a>
-    </aside>
-    <el-button icon="el-icon-question" type="primary" @click.prevent.stop="guide">
-      Show Guide
-    </el-button>
+  <div class="tab-container">
+    <el-tabs v-model="activeName" style="margin-top:15px;" type="border-card">
+      <el-tab-pane v-for="item in tabMapOptions" :key="item.key" :label="item.label" :name="item.key">
+        <keep-alive>
+          <tab-pane v-if="activeName==item.key" :type="item.key" @create="showCreatedTimes" />
+        </keep-alive>
+      </el-tab-pane>
+    </el-tabs>
   </div>
 </template>
 
 <script>
-import Driver from 'driver.js' // import driver.js
-import 'driver.js/dist/driver.min.css' // import driver.js css
-import steps from './steps'
+import TabPane from './components/TabPane'
 
 export default {
-  name: 'Guide',
+  name: 'Tab',
+  components: { TabPane },
   data() {
     return {
-      driver: null
+      tabMapOptions: [
+        { label: '科研人员', key: 'type1' },
+        { label: '评审专家', key: 'type2' }
+      ],
+      activeName: 'type1',
+      createdTimes: 0
     }
   },
-  mounted() {
-    this.driver = new Driver()
+  watch: {
+    activeName(val) {
+      this.$router.push(`${this.$route.path}?tab=${val}`)
+    }
+  },
+  created() {
+    // 初始化默认选中的选项卡
+    const tab = this.$route.query.tab
+    if (tab) {
+      this.activeName = tab
+    }
   },
   methods: {
-    guide() {
-      this.driver.defineSteps(steps)
-      this.driver.start()
+    showCreatedTimes() {
+      this.createdTimes = this.createdTimes + 1
     }
   }
 }
 </script>
+
+<style scoped>
+  .tab-container {
+    margin: 30px;
+  }
+</style>

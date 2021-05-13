@@ -6,12 +6,6 @@ Vue.use(Router)
 /* Layout */
 import Layout from '@/layout'
 
-/* Router Modules */
-import componentsRouter from './modules/components'
-import chartsRouter from './modules/charts'
-import tableRouter from './modules/table'
-import nestedRouter from './modules/nested'
-
 /**
  * Note: sub-menu only appear when route children.length >= 1
  * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -35,8 +29,7 @@ import nestedRouter from './modules/nested'
 
 /**
  * constantRoutes
- * a base page that does not have permission requirements
- * all roles can be accessed
+ * 没有权限要求的基本页可以访问所有角色
  */
 export const constantRoutes = [
   {
@@ -56,11 +49,6 @@ export const constantRoutes = [
     hidden: true
   },
   {
-    path: '/auth-redirect',
-    component: () => import('@/views/login/auth-redirect'),
-    hidden: true
-  },
-  {
     path: '/404',
     component: () => import('@/views/error-page/404'),
     hidden: true
@@ -73,317 +61,251 @@ export const constantRoutes = [
   {
     path: '/',
     component: Layout,
+	redirect: '/index',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/index/index'),
+        name: 'Index',
+        meta: { title: '首页', icon: 'el-icon-s-home', noCache: true }
+      }
+    ]
+  },
+  {
+    path: '/dashboard',
+    component: Layout,
     redirect: '/dashboard',
+	alwaysShow: true, // 将始终显示根菜单
+	name: 'Dashboard',
+	meta: {
+		title: '创新动态展示',
+		icon: 'component'
+	},
     children: [
       {
         path: 'dashboard',
-        component: () => import('@/views/dashboard/index'),
+        component: () => import('@/views/dashboard/policy'),
         name: 'Dashboard',
-        meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
+        meta: { title: '政策资讯'}
+      },
+	  {
+        path: 'technology',
+        component: () => import('@/views/dashboard/technology'),
+        name: 'Technology',
+        meta: { title: '科技管理信息'}
       }
     ]
   },
   {
     path: '/documentation',
     component: Layout,
+	redirect: '/documentation',
+	alwaysShow: true, // 将始终显示根菜单
+	name: 'Documentation',
+	meta: { title: '科研项目管理', icon: 'documentation', noCache: true },
     children: [
-      {
-        path: 'index',
-        component: () => import('@/views/documentation/index'),
-        name: 'Documentation',
-        meta: { title: 'Documentation', icon: 'documentation', affix: true }
-      }
+		{
+			path: 'process',
+			component: () => import('@/views/documentation/process'),
+			name: 'Process',
+			meta: { title: '项目申报流程'}
+		},
+		{
+			path: 'collect',
+			component: () => import('@/views/documentation/collect'),
+			name: 'Collect',
+			meta: { title: '指南征集'}
+		},
+		{
+			path: 'application',
+			component: () => import('@/views/documentation/application'),
+			name: 'Application',
+			meta: { title: '项目申报'}
+		},
+		{
+			path: 'project',
+			component: () => import('@/views/documentation/project'),
+			name: 'Project',
+			meta: { title: '立项评审'}
+		},
+		{
+			path: 'taskbook',
+			component: () => import('@/views/documentation/taskbook'),
+			name: 'Taskbook',
+			meta: { title: '任务书签订'}
+		},
+		{
+			path: 'midterm',
+			component: () => import('@/views/documentation/midterm'),
+			name: 'Midterm',
+			meta: { title: '中期检查'}
+		},
+		{
+			path: 'changeProcedure',
+			component: () => import('@/views/documentation/changeProcedure'),
+			name: 'ChangeProcedure',
+			meta: { title: '变更程序及批复'}
+		},
+		{
+			path: 'materials',
+			component: () => import('@/views/documentation/materials'),
+			name: 'Materials',
+			meta: { title: '验收材料提交'}
+		},
+		{
+			path: 'review',
+			component: () => import('@/views/documentation/review'),
+			name: 'Review',
+			meta: { title: '验收评审'}
+		},
+		{
+			path: 'storage',
+			component: () => import('@/views/documentation/storage'),
+			name: 'Storage',
+			meta: { title: '材料电子存储'}
+		}
+    ]
+  },
+  {
+    path: '/example',
+    component: Layout,
+	redirect: '/example',
+	alwaysShow: true, // 将始终显示根菜单
+	name: 'Example',
+	meta: { title: '科技成果管理', icon: 'star', noCache: true },
+    children: [
+		{
+			path: 'processManage',
+			component: () => import('@/views/example/processManage'),
+			name: 'ProcessManage',
+			meta: { title: '流程管理'}
+		},
+		{
+			path: 'cognizance',
+			component: () => import('@/views/example/cognizance'),
+			name: 'Cognizance',
+			meta: { title: '成果认定'}
+		},
+		{
+			path: 'access',
+			component: () => import('@/views/example/access'),
+			name: 'Access',
+			meta: { title: '成果准入'}
+		},
+		{
+			path: 'invert',
+			component: () => import('@/views/example/invert'),
+			name: 'Invert',
+			meta: { title: '成果转化'}
+		},
+		{
+			path: 'reward',
+			component: () => import('@/views/example/reward'),
+			name: 'Reward',
+			meta: { title: '科技奖励'}
+		},		
     ]
   },
   {
     path: '/guide',
     component: Layout,
-    redirect: '/guide/index',
+    redirect: '/guide',
+	alwaysShow: true, // 将始终显示根菜单
+	name: 'Guide',
+	meta: { title: '科研信息综合管理', icon: 'list', noCache: true },
     children: [
       {
-        path: 'index',
-        component: () => import('@/views/guide/index'),
-        name: 'Guide',
-        meta: { title: 'Guide', icon: 'guide', noCache: true }
+        path: 'subject',
+        component: () => import('@/views/guide/subject'),
+		name: 'Subject',
+		meta: { title: '科研项目'}
+      },
+	  {
+        path: 'achievements',
+        component: () => import('@/views/guide/achievements'),
+		name: 'Achievements',
+		meta: { title: '科技成果'}
+      },
+	  {
+        path: 'personnel',
+        component: () => import('@/views/guide/personnel'),
+		name: 'Personnel',
+		meta: { title: '科技人员'}
+      },
+	  {
+        path: 'expert',
+        component: () => import('@/views/guide/expert'),
+		name: 'Expert',
+		meta: { title: '专家'}
+      },
+	  {
+        path: 'unit',
+        component: () => import('@/views/guide/unit'),
+		name: 'unit',
+		meta: { title: '申报单位'}
       }
     ]
   },
-  {
-    path: '/profile',
-    component: Layout,
-    redirect: '/profile/index',
-    hidden: true,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/profile/index'),
-        name: 'Profile',
-        meta: { title: 'Profile', icon: 'user', noCache: true }
-      }
-    ]
-  }
 ]
 
 /**
  * asyncRoutes
- * the routes that need to be dynamically loaded based on user roles
+ * 需要根据用户角色动态加载的路由
  */
 export const asyncRoutes = [
-  {
-    path: '/permission',
-    component: Layout,
-    redirect: '/permission/page',
-    alwaysShow: true, // will always show the root menu
-    name: 'Permission',
-    meta: {
-      title: 'Permission',
-      icon: 'lock',
-      roles: ['admin', 'editor'] // you can set roles in root nav
-    },
-    children: [
-      {
-        path: 'page',
-        component: () => import('@/views/permission/page'),
-        name: 'PagePermission',
-        meta: {
-          title: 'Page Permission',
-          roles: ['admin'] // or you can only set roles in sub nav
-        }
-      },
-      {
-        path: 'directive',
-        component: () => import('@/views/permission/directive'),
-        name: 'DirectivePermission',
-        meta: {
-          title: 'Directive Permission'
-          // if do not set roles, means: this page does not require permission
-        }
-      },
-      {
-        path: 'role',
-        component: () => import('@/views/permission/role'),
-        name: 'RolePermission',
-        meta: {
-          title: 'Role Permission',
-          roles: ['admin']
-        }
-      }
-    ]
-  },
-
-  {
-    path: '/icon',
+	{
+		path: '/permission',
+		component: Layout,
+		redirect: '/permission/index',
+		alwaysShow: true, // 将始终显示根菜单
+		name: 'Permission',
+		meta: {
+			title: '系统管理',
+			icon: 'el-icon-s-tools'
+		},
+		children: [
+			{
+				path: 'user',
+				component: () => import('@/views/permission/user'),
+				name: 'UserPermission',
+				meta: {
+					title: '用户管理',
+					roles: ['admin'] 
+				}
+			},
+			{
+				path: 'role',
+				component: () => import('@/views/permission/role'),
+				name: 'RolePermission',
+				meta: {
+					title: '角色管理',
+					roles: ['admin']
+				}
+			},
+			{
+				path: 'log',
+				component: () => import('@/views/permission/log'),
+				name: 'LogPermission',
+				meta: {
+					title: '日志管理',
+					roles: ['admin']
+				}
+			}
+		]
+   },
+   {
+    path: '/message',
     component: Layout,
     children: [
       {
         path: 'index',
-        component: () => import('@/views/icons/index'),
-        name: 'Icons',
-        meta: { title: 'Icons', icon: 'icon', noCache: true }
+        component: () => import('@/views/message/index'),
+        name: 'Message',
+        meta: { title: '信息提醒', icon: 'el-icon-message-solid', noCache: true }
       }
     ]
   },
-
-  /** when your routing map is too long, you can split it into small modules **/
-  componentsRouter,
-  chartsRouter,
-  nestedRouter,
-  tableRouter,
-
-  {
-    path: '/example',
-    component: Layout,
-    redirect: '/example/list',
-    name: 'Example',
-    meta: {
-      title: 'Example',
-      icon: 'el-icon-s-help'
-    },
-    children: [
-      {
-        path: 'create',
-        component: () => import('@/views/example/create'),
-        name: 'CreateArticle',
-        meta: { title: 'Create Article', icon: 'edit' }
-      },
-      {
-        path: 'edit/:id(\\d+)',
-        component: () => import('@/views/example/edit'),
-        name: 'EditArticle',
-        meta: { title: 'Edit Article', noCache: true, activeMenu: '/example/list' },
-        hidden: true
-      },
-      {
-        path: 'list',
-        component: () => import('@/views/example/list'),
-        name: 'ArticleList',
-        meta: { title: 'Article List', icon: 'list' }
-      }
-    ]
-  },
-
-  {
-    path: '/tab',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/tab/index'),
-        name: 'Tab',
-        meta: { title: 'Tab', icon: 'tab' }
-      }
-    ]
-  },
-
-  {
-    path: '/error',
-    component: Layout,
-    redirect: 'noRedirect',
-    name: 'ErrorPages',
-    meta: {
-      title: 'Error Pages',
-      icon: '404'
-    },
-    children: [
-      {
-        path: '401',
-        component: () => import('@/views/error-page/401'),
-        name: 'Page401',
-        meta: { title: '401', noCache: true }
-      },
-      {
-        path: '404',
-        component: () => import('@/views/error-page/404'),
-        name: 'Page404',
-        meta: { title: '404', noCache: true }
-      }
-    ]
-  },
-
-  {
-    path: '/error-log',
-    component: Layout,
-    children: [
-      {
-        path: 'log',
-        component: () => import('@/views/error-log/index'),
-        name: 'ErrorLog',
-        meta: { title: 'Error Log', icon: 'bug' }
-      }
-    ]
-  },
-
-  {
-    path: '/excel',
-    component: Layout,
-    redirect: '/excel/export-excel',
-    name: 'Excel',
-    meta: {
-      title: 'Excel',
-      icon: 'excel'
-    },
-    children: [
-      {
-        path: 'export-excel',
-        component: () => import('@/views/excel/export-excel'),
-        name: 'ExportExcel',
-        meta: { title: 'Export Excel' }
-      },
-      {
-        path: 'export-selected-excel',
-        component: () => import('@/views/excel/select-excel'),
-        name: 'SelectExcel',
-        meta: { title: 'Export Selected' }
-      },
-      {
-        path: 'export-merge-header',
-        component: () => import('@/views/excel/merge-header'),
-        name: 'MergeHeader',
-        meta: { title: 'Merge Header' }
-      },
-      {
-        path: 'upload-excel',
-        component: () => import('@/views/excel/upload-excel'),
-        name: 'UploadExcel',
-        meta: { title: 'Upload Excel' }
-      }
-    ]
-  },
-
-  {
-    path: '/zip',
-    component: Layout,
-    redirect: '/zip/download',
-    alwaysShow: true,
-    name: 'Zip',
-    meta: { title: 'Zip', icon: 'zip' },
-    children: [
-      {
-        path: 'download',
-        component: () => import('@/views/zip/index'),
-        name: 'ExportZip',
-        meta: { title: 'Export Zip' }
-      }
-    ]
-  },
-
-  {
-    path: '/pdf',
-    component: Layout,
-    redirect: '/pdf/index',
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/pdf/index'),
-        name: 'PDF',
-        meta: { title: 'PDF', icon: 'pdf' }
-      }
-    ]
-  },
-  {
-    path: '/pdf/download',
-    component: () => import('@/views/pdf/download'),
-    hidden: true
-  },
-
-  {
-    path: '/theme',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/theme/index'),
-        name: 'Theme',
-        meta: { title: 'Theme', icon: 'theme' }
-      }
-    ]
-  },
-
-  {
-    path: '/clipboard',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/clipboard/index'),
-        name: 'ClipboardDemo',
-        meta: { title: 'Clipboard', icon: 'clipboard' }
-      }
-    ]
-  },
-
-  {
-    path: 'external-link',
-    component: Layout,
-    children: [
-      {
-        path: 'https://github.com/PanJiaChen/vue-element-admin',
-        meta: { title: 'External Link', icon: 'link' }
-      }
-    ]
-  },
-
-  // 404 page must be placed at the end !!!
+  // 404页必须放在末尾 !!!
   { path: '*', redirect: '/404', hidden: true }
 ]
 

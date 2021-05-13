@@ -1,5 +1,5 @@
 module.exports = {
-  title: 'Vue Element Admin',
+  title: '山东气象科技管理云平台',
 
   /**
    * @type {boolean} true | false
